@@ -21,6 +21,8 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (delete-selection-mode +1)
 
+;; emacs-daemon uses the same emacs instance
+(setq create-lockfiles nil)
 ;; Not working
 ;; (add-to-list 'default-frame-alist
 ;;             '(font . "Fira Code-12"))
@@ -68,6 +70,9 @@
 (use-package bury-successful-compilation ;; If compilation success hide message buffer
   :hook
   (prog-mode . bury-successful-compilation))
+(use-package which-key
+  :init
+  (which-key-mode))
 
 ;; Unsure if need the following
 ;; (bind-key (remap save-buffers-kill-terminal) 'save-buffers-kill-emacs)
@@ -87,7 +92,3 @@
   (global-auto-revert-mode +1)
   :custom
   (auto-revert-verbose nil))
-
-;; Binds tab to window toggle
-(use-package ace-window
-  :bind (("<C-tab>" . ace-window)))
