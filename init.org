@@ -1,48 +1,80 @@
-(require 'package)
-;; Work-around for gnu currently down for emacs 26.1
-;; package-refresh-contents to update archives
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
-(package-initialize)
+* Configuration
+** Package archives
+#+begin_src emacs-lisp :tangle yes
+    (require 'package)
+    ;; Work-around for gnu currently down for emacs 26.1
+    ;; package-refresh-contents to update archives
+    (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+    (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
+    (package-initialize)
+#+END_SRC
 
+#+RESULTS:
+
+** User Information
+#+begin_src emacs-lisp :tangle yes 
 ;; Personal details
 (setq user-full-name "Noel Kwan"
       user-mail-address "noelkwan1998@gmail.com")
+#+END_SRC
 
+** Removing extras
+#+begin_src emacs-lisp :tangle yes
 (tooltip-mode -1)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (setq inhibit-splash-screen t)
 (setq inhibit-startup-message t)
+#+END_SRC
 
+** Misc preferences
+#+begin_src emacs-lisp :tangle yes 
 (defalias 'yes-or-no-p 'y-or-n-p)
 (delete-selection-mode +1)
+#+END_SRC
 
+** Emacs daemon
+#+begin_src emacs-lisp :tangle yes 
 ;; emacs-daemon uses the same emacs instance
 (setq create-lockfiles nil)
 ;; Not working
 ;; (add-to-list 'default-frame-alist
 ;;             '(font . "Fira Code-12"))
+#+END_SRC
 
+** Custom generated code
+#+begin_src emacs-lisp :tangle yes 
 ;; Feed generated code into here
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
+#+END_SRC
 
+** Backup files
+#+begin_src emacs-lisp :tangle yes 
 ;; Push backup files in to /tmp
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
+#+END_SRC
 
+** Misc preferences
+#+begin_src emacs-lisp :tangle yes 
 (setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
+#+END_SRC
 
+** Windows toggling (obsolete)
+#+begin_src emacs-lisp :tangle yes 
 ;; use shift-dirKeys to toggles windows
 (when (fboundp 'windmove-default-keybindings)
   (windmove-default-keybindings))
+#+END_SRC
 
+** Use-package configuration
+#+begin_src emacs-lisp :tangle yes
 ;; Install use-package if isn't installed
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -55,7 +87,11 @@
 
 ;; Always demand if daemon-mode
 (setq use-package-always-demand (daemonp))
+#+END_SRC
 
+** Packages
+*** Misc
+#+begin_src emacs-lisp :tangle yes 
 ;; Use these packages
 (use-package ag)
 (use-package undo-tree)
@@ -76,15 +112,24 @@
 (use-package which-key
   :init
   (which-key-mode))
-
+#+END_SRC
+*** Languages
+**** Javascript
+#+begin_src emacs-lisp :tangle yes 
 (use-package js2-mode
   :mode (("\\.js\\'" . js2-mode))
 )
-
+#+END_SRC
+**** Common lisp
+#+begin_src emacs-lisp :tangle yes 
 (use-package cl-lib) ;; common lisp
-
+#+END_SRC
+**** Haskell
+#+begin_src emacs-lisp :tangle yes 
 (use-package intero)
-
+#+END_SRC
+**** Rust
+#+begin_src emacs-lisp :tangle yes 
 (use-package rust-mode)
 (use-package company)
 (use-package racer)
@@ -100,8 +145,13 @@
 (use-package flycheck-rust)
 (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
 
+#+END_SRC
+**** Nix
+#+begin_src emacs-lisp :tangle yes 
 (use-package nix-mode)
-
+#+END_SRC
+**** Typescript
+#+begin_src emacs-lisp :tangle yes 
 (use-package tide)
 (defun setup-tide-mode ()
   (interactive)
@@ -122,15 +172,24 @@
 (add-hook 'before-save-hook 'tide-format-before-save)
 
 (add-hook 'typescript-mode-hook #'setup-tide-mode)
+#+END_SRC
 
+** Bind Key
+#+begin_src emacs-lisp :tangle yes 
 ;; Unsure if need the following
 ;; (bind-key (remap save-buffers-kill-terminal) 'save-buffers-kill-emacs)
+#+END_SRC
 
+** Custom theme
+#+begin_src emacs-lisp :tangle yes 
 ;; use custom theme
 (use-package ample-theme
   :init
   (load-theme 'ample-flat t))
+#+END_SRC
 
+** Git integration
+#+begin_src emacs-lisp :tangle yes
 ;; Revert git buffers if branches change
 (use-package autorevert
   :ensure f
@@ -141,9 +200,15 @@
   (global-auto-revert-mode +1)
   :custom
   (auto-revert-verbose nil))
+#+END_SRC
 
+** Org babel support
+   > C-c C-v f to output code
+#+begin_src emacs-lisp :tangle yes 
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((js . t)
    (emacs-lisp . t)
    (haskell . t)))
+#+END_SRC
+   

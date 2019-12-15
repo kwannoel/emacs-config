@@ -7,7 +7,7 @@
  '(inhibit-startup-screen t)
  '(package-selected-packages
    (quote
-    (which-key pdf-tools undo-tree evil bury-successful-compilation diminish ace-window f ample-theme use-package))))
+    (flycheck-rust racer company-mode ag typescript-mode tide rust-mode rainbow-delimiters js2-mode org-mode intero nix-mode haskell-mode which-key pdf-tools undo-tree evil bury-successful-compilation diminish ace-window f ample-theme use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

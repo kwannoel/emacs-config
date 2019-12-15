@@ -10,6 +10,7 @@
 (setq user-full-name "Noel Kwan"
       user-mail-address "noelkwan1998@gmail.com")
 
+;; Removing extras
 (tooltip-mode -1)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
@@ -17,6 +18,7 @@
 (setq inhibit-splash-screen t)
 (setq inhibit-startup-message t)
 
+;; Misc preferences
 (defalias 'yes-or-no-p 'y-or-n-p)
 (delete-selection-mode +1)
 
@@ -57,16 +59,20 @@
 (setq use-package-always-demand (daemonp))
 
 ;; Use these packages
-(use-package ag)
 (use-package undo-tree)
 ;; Use vi bindings
 (use-package evil
   :init
   (evil-mode 1))
-
+(use-package js2-mode
+  :mode (("\\.js\\'" . js2-mode))
+)
 (use-package rainbow-delimiters)
 (use-package pdf-tools) 
 ;; (use-package haskell-mode)
+(use-package intero)
+(use-package rust-mode)
+(use-package nix-mode)
 (use-package cl-lib) ;; common lisp
 (use-package bind-key) ;; Key-binding manager
 (use-package diminish) ;; Shorten mode-desc
@@ -76,52 +82,7 @@
 (use-package which-key
   :init
   (which-key-mode))
-
-(use-package js2-mode
-  :mode (("\\.js\\'" . js2-mode))
-)
-
-(use-package cl-lib) ;; common lisp
-
-(use-package intero)
-
-(use-package rust-mode)
-(use-package company)
-(use-package racer)
-(setq racer-cmd "~/.cargo/bin/racer") ;; Rustup binaries PATH
-;; Rust source code PATH
-(setq racer-rust-src-path 
-      "~/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src")
-
-(add-hook 'rust-mode-hook #'racer-mode)
-(add-hook 'racer-mode-hook #'eldoc-mode)
-(add-hook 'racer-mode-hook #'company-mode)
-
-(use-package flycheck-rust)
-(add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
-
-(use-package nix-mode)
-
 (use-package tide)
-(defun setup-tide-mode ()
-  (interactive)
-  (tide-setup)
-  (flycheck-mode +1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eldoc-mode +1)
-  (tide-hl-identifier-mode +1)
-  ;; company is an optional dependency. You have to
-  ;; install it separately via package-install
-  ;; `M-x package-install [ret] company`
-  (company-mode +1))
-
-;; aligns annotation to the right hand side
-(setq company-tooltip-align-annotations t)
-
-;; formats the buffer before saving
-(add-hook 'before-save-hook 'tide-format-before-save)
-
-(add-hook 'typescript-mode-hook #'setup-tide-mode)
 
 ;; Unsure if need the following
 ;; (bind-key (remap save-buffers-kill-terminal) 'save-buffers-kill-emacs)
